@@ -1,30 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:news_app_with_getx/components/news_card.dart';
-import 'package:news_app_with_getx/models/top_news.dart';
-import 'package:news_app_with_getx/services/fetch_servis.dart';
+import 'package:news_app_with_getx/controller/fetch_controller.dart';
 import 'package:news_app_with_getx/theme/app_colors.dart';
 import 'package:news_app_with_getx/views/search_view.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+class HomeView extends StatelessWidget {
+  HomeView({Key? key}) : super(key: key);
 
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  TopNews? topNews;
-
-  Future<void> fetchNews() async {
-    topNews = await TopNewsService().fetchTopNews();
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchNews();
-  }
+  final controller = Get.put(FetchController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +22,14 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
       ),
-      body: topNews == null
+      body: controller.topNews.value == null
           ? const Center(
               child: CircularProgressIndicator(),
             )
           : ListView.builder(
-              itemCount: topNews!.articles.length,
+              itemCount: controller.topNews.value!.articles.length,
               itemBuilder: (context, index) {
-                final item = topNews!.articles[index];
+                final item = controller.topNews.value!.articles[index];
                 return NewsCard(item: item);
               },
             ),
