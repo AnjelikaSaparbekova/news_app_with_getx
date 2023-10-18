@@ -22,17 +22,19 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-      body: controller.topNews.value == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: controller.topNews.value!.articles.length,
-              itemBuilder: (context, index) {
-                final item = controller.topNews.value!.articles[index];
-                return NewsCard(item: item);
-              },
-            ),
+      body: Obx(
+        () => controller.topNews.value == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                itemCount: controller.topNews.value!.articles.length,
+                itemBuilder: (context, index) {
+                  final item = controller.topNews.value!.articles[index];
+                  return NewsCard(item: item);
+                },
+              ),
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.appBar,
         onPressed: () {
